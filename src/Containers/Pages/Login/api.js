@@ -1,5 +1,5 @@
-import {  useState } from "react";
-import { httpClient } from "../../../utl/HttpClient";
+import React, {  useState } from "react";
+import { httpClient } from "../../../utl/httpClient.js";
 
 export const useProvideAuth = () => {
   const [authUser, setAuthUser] = useState(null);
@@ -36,6 +36,13 @@ export const useProvideAuth = () => {
             data.data.token,
             httpClient.defaults.headers.common["authorization"]
           );
+          setAuthUser(data?.data)
+          
+          localStorage.setItem(
+            "userInfo",
+            JSON.stringify(data.data)
+          );
+          window.location.reload(false)
           //history.push('/dashboard');
           //getAuthUser();
           if (callbackFun) callbackFun();
@@ -44,14 +51,34 @@ export const useProvideAuth = () => {
         }
       })
       .catch(function (error) {
-        fetchError(error.message);
+        fetchError(error);
         httpClient.defaults.headers.common["authorization"] = "";
       });
   };
+  React.useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      httpClient.defaults.headers.common['authorization'] = token;
+      const data = JSON.parse( localStorage.getItem("userInfo") || {})
+      setAuthUser(data)
+     }
+ 
+  },[])
+  const logout = (callbackFun) => {
+    fetchSuccess();
+    httpClient.defaults.headers.common['authorization'] = '';
+    localStorage.clear();
+    setAuthUser(false);
+    if (callbackFun) callbackFun();
+   
+  }
   return {
     setError,
     authUser,
     setAuthUser,
     userLogin,
+    error,
+    isLoading,
+    logout
   };
 };

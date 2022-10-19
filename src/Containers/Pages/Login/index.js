@@ -1,35 +1,39 @@
 import React, { useState } from "react";
-import { Modal, Form, Button } from "react-bootstrap";
+import { Modal, Form } from "react-bootstrap";
 import { useProvideAuth } from "./api.js";
 
 export default function Login(props) {
-  console.log(props, "props");
+
   const [values, setValues] = useState({
     email: "",
     password: "",
   });
-  // const [show, setShow] = useState(false);
 
-  // const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
-
-  const { userLogin } = useProvideAuth();
-
+  const { userLogin, error,  isLoading } = useProvideAuth();
+  const [validated, setValidated] = useState(false);
   function handleSubmit(e) {
     e.preventDefault();
-    props.onHide();
-    userLogin(values);
-    /* axios
-            .post("https://jobs-api.squareboat.info/api/v1/auth/login", {
-                email: values.email,
-                password: values.pass,
-            })
-            .then((res) => {
-                localStorage.setItem("token", res.data.token);
-            })
-            .catch((err) => console.error(err)); */
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    } else {
+      userLogin(values);
+      setValidated(true);
+      if (isLoading) {
+        console.log(props.show(), " props.show()");
+      } else {
+        console.log(props.show(), isLoading, " props.show()");
+        if (error?.response?.status !== 401 && !error) {
+          e.preventDefault();
+          e.stopPropagation();
+          props.onHide();
+        } else {
+          props.show();
+        }
+      }
+    }
   }
-
   return (
     <>
       {/* <button onClick={handleShow}>open me</button> */}
@@ -40,6 +44,7 @@ export default function Login(props) {
           size="lg"
           aria-labelledby="contained-modal-title-vcenter"
           centered
+          className="login__modal"
         >
           <Modal.Header>
             <Modal.Title id="contained-modal-title-vcenter">Login</Modal.Title>
@@ -51,7 +56,7 @@ export default function Login(props) {
               placeholder="Enter your email"
               onChange={(e) => setValues({ ...values, email: e.target.value })}
             />{" "} */}
-            <Form validated={true} onSubmit={handleSubmit}>
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
@@ -60,8 +65,11 @@ export default function Login(props) {
                   onChange={(e) =>
                     setValues({ ...values, email: e.target.value })
                   }
-                  required
+                  
                 />
+                <div className="invalid-feedback">
+                  Please enter a valid email address.
+                </div>
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -72,20 +80,27 @@ export default function Login(props) {
                   onChange={(e) =>
                     setValues({ ...values, password: e.target.value })
                   }
-                  required
+                  
                 />
+                <div className="invalid-feedback text-right">
+                  Please enter a valid valid password.
+                </div>
+                {error?.response?.status === 401 ? (
+                  <p className="text-error">Incorrect email or password</p>
+                ) : (
+                  ""
+                )}
               </Form.Group>
-              <br/>
+              <br />
               <div className="text-center">
-
-              <button type="submit" className="primary-btn">
-                Login
-              </button>
+                <button type="submit" className="primary-btn">
+                  Login
+                </button>
               </div>
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <br/>
+            <br />
           </Modal.Footer>
         </Modal>
       </div>
