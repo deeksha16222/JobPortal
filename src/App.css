@@ -144,14 +144,14 @@
     margin-top: 33px;
   }
   .image__banner {
-    width: 85%;
+    width: 80%;
     position: absolute;
     bottom: -120px;
     text-align: right;
   }
   .image__banner > img {
     width: 602px;
-    height: 395px;
+    height: 490px;
   }
   .why-blk {
     padding-top: 80px;
