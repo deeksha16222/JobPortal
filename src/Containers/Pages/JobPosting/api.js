@@ -7,6 +7,7 @@ export const useJobs = () => {
 
   const [isLoading, setLoading] = useState(false);
   const [jobList, setJobList] = useState([]);
+  const [applicantsInfo, setApplicantsInfo] = useState([])
   const fetchStart = () => {
     setLoading(true);
     setError("");
@@ -47,9 +48,34 @@ export const useJobs = () => {
         fetchError(error.message);
       });
   };
+  const getApplicants = (data) => {
+    fetchStart();
+
+    const token = localStorage.getItem("token");
+    console.log(token, "token");
+    if (token) {
+      httpClient.defaults.headers.common["authorization"] = token;
+    }
+
+    httpClient
+      .get(`/recruiters/jobs/${data}/candidates`)
+      .then(({ data }) => {
+        fetchSuccess();
+        console.log(data, "data");
+        if (data.data.data) {
+         setApplicantsInfo(data);
+        }
+      })
+      .catch(function (error) {
+        localStorage.removeItem("token");
+        httpClient.defaults.headers.common["authorization"] = "";
+        fetchError(error.message);
+      });
+  };
   return {
     getJobs,
     jobList,
-    error, isLoading
+    error, isLoading,
+    getApplicants, applicantsInfo
   };
 };

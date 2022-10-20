@@ -45,9 +45,7 @@ export const useProvideAuth = () => {
           );
           navigate("/job-listing")
           window.location.reload(false)
-        
-          //history.push('/dashboard');
-          //getAuthUser();
+      
           if (callbackFun) callbackFun();
         } else {
           fetchError(data.error);

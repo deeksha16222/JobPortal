@@ -50,12 +50,6 @@ export default function Login(props) {
             <Modal.Title id="contained-modal-title-vcenter">Login</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {/* Email address{" "} */}
-            {/* <input
-              type="email"
-              placeholder="Enter your email"
-              onChange={(e) => setValues({ ...values, email: e.target.value })}
-            />{" "} */}
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
@@ -70,11 +64,11 @@ export default function Login(props) {
                 <div className="invalid-feedback">
                   Please enter a valid email address.
                 </div>
-                {error?.response?.status === 401 ? (
+                {/*{error?.response?.status === 401 ? (
                   <p className="text-error">Please enter a valid email address</p>
                 ) : (
                   ""
-                )}
+                )} */}
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -88,7 +82,7 @@ export default function Login(props) {
                   
                 />
                 <div className="invalid-feedback text-right">
-                  Please enter a valid valid password.
+                  Please enter a valid password.
                 </div>
                 {error?.response?.status === 401 ? (
                   <p className="text-error">Incorrect email or password</p>
