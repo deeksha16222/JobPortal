@@ -92,7 +92,7 @@ export default function Login(props) {
               </Form.Group>
               <br />
               <div className="text-center">
-                <button type="submit" className="primary-btn">
+                <button type="submit" disabled={isLoading} className="primary-btn">
                   Login
                 </button>
               </div>

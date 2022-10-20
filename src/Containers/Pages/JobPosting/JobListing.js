@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import { useJobs } from "./api.js";
 import Pagination from "./Pagination.js";
 import geo from "../../../assets/images/icons/geo.svg";
@@ -6,18 +6,25 @@ import writing from "../../../assets/images/icons/writing.svg";
 import { Applicants } from "./Applicants.js";
 
 export default function JobListing() {
-  const { getJobs, jobList, isLoading, error } = useJobs();
+  const { getJobs, jobList, isLoading, error, getApplicants, applicantsInfo } = useJobs();
   const [currentPage, setCurrentPage] = useState(1);
   const [modalShow, setModalShow] = React.useState(false);
-  const [jobInfo, setJobInfo] = React.useState("");
 
   React.useEffect(() => {
     getJobs(currentPage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
+  const openModal = (id) => {
+    setModalShow(true);
+    if ( id !== undefined) {
+      getApplicants(id);
+    }
+  }
+
   if (error) return <h1>{error}</h1>;
   if (isLoading) return <h1>Loading...</h1>;
+
   return (
     <>
       <div className="bg-dark background__wrap"></div>
@@ -40,8 +47,9 @@ export default function JobListing() {
                         <button
                           className="primary-btn card-button"
                           onClick={() => {
-                            setJobInfo(i);
-                            setModalShow(true);
+                            openModal(i.id)
+                            // setJobInfo(i);
+                          
                           }}
                         >
                           {" "}
@@ -78,7 +86,11 @@ export default function JobListing() {
             ""
           )}
         </div>
-        <Applicants show={modalShow} onHide={() => setModalShow(false)} jobInfo={jobInfo}/>
+        <Applicants
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          applicantsInfo={applicantsInfo}
+        />
       </div>
     </>
   );
