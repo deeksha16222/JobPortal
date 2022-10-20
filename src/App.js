@@ -8,6 +8,7 @@ import {
 import { Home } from './Containers/Pages/Home';
 import { Headers} from './Containers/Components/Header/Headers.js';
 import Login from './Containers/Pages/Login';
+import JobListing from './Containers/Pages/JobPosting/JobListing';
 
 function App() {
   return (
@@ -17,8 +18,7 @@ function App() {
     <Routes>
       <Route exact path="/" element={<Home/>}/>
       <Route exact path="/login" element={<Login/>}/>
-
-      
+      <Route exact path="/job-listing" element={<JobListing/>}/>
     </Routes>
     {/* </div> */}
   </BrowserRouter>

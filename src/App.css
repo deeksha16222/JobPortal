@@ -142,14 +142,14 @@ header.white .header__wrap {
 
 }
 .image__banner {
-  width: 85%;
+  width: 75%;
   position: absolute;
   bottom: -120px;
   text-align: right;
 }
 .image__banner > img {
-   width: 602px; 
-   height: 395px; 
+   width: 625px; 
+   height: 500px; 
 }
 .why-blk {
   padding-top: 80px;

@@ -1,10 +1,11 @@
 import React, {  useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { httpClient } from "../../../utl/httpClient.js";
 
 export const useProvideAuth = () => {
   const [authUser, setAuthUser] = useState(null);
   const [error, setError] = useState("");
-  //const history = useHistory();
+  const navigate = useNavigate()
   const [isLoading, setLoading] = useState(false);
 
   const fetchStart = () => {
@@ -42,7 +43,9 @@ export const useProvideAuth = () => {
             "userInfo",
             JSON.stringify(data.data)
           );
+          navigate("/job-listing")
           window.location.reload(false)
+        
           //history.push('/dashboard');
           //getAuthUser();
           if (callbackFun) callbackFun();
@@ -59,8 +62,11 @@ export const useProvideAuth = () => {
     const token = localStorage.getItem('token');
     if (token) {
       httpClient.defaults.headers.common['authorization'] = token;
-      const data = JSON.parse( localStorage.getItem("userInfo") || {})
-      setAuthUser(data)
+      const data = localStorage.getItem("userInfo")
+
+      setAuthUser(JSON.parse(data))
+     }else{
+      navigate("/")
      }
  
   },[])
@@ -68,6 +74,7 @@ export const useProvideAuth = () => {
     fetchSuccess();
     httpClient.defaults.headers.common['authorization'] = '';
     localStorage.clear();
+    navigate("/")
     setAuthUser(false);
     if (callbackFun) callbackFun();
    

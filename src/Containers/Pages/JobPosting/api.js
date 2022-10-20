@@ -38,7 +38,7 @@ export const useJobs = () => {
         console.log(data, "data");
         if (data.data.data) {
           setJobList(data.data);
-          //    setAuthUser(data.data.data);
+          //setAuthUser(data.data.data);
         }
       })
       .catch(function (error) {

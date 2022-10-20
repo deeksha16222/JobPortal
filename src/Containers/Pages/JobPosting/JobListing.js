@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useJobs } from './api.js';
 import Pagination from "./Pagination.js";
 import '../../../style/JobListing.css';
-import '../../App.css';
 
 export default function JobListing() {
   const [posts, setPosts] = useState([]);
