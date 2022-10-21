@@ -1,9 +1,11 @@
+
 import React, {  useState } from "react";
 import { useJobs } from "./api.js";
 import Pagination from "./Pagination.js";
 import geo from "../../../assets/images/icons/geo.svg";
 import writing from "../../../assets/images/icons/writing.svg";
 import { Applicants } from "./Applicants.js";
+
 
 export default function JobListing() {
   const { getJobs, jobList, isLoading, error, getApplicants, applicantsInfo } = useJobs();
@@ -47,9 +49,7 @@ export default function JobListing() {
                         <button
                           className="primary-btn card-button"
                           onClick={() => {
-                            openModal(i.id)
-                            // setJobInfo(i);
-                          
+                            openModal(i.id)                          
                           }}
                         >
                           {" "}

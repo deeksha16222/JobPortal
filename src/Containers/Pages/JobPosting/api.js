@@ -7,7 +7,7 @@ export const useJobs = () => {
 
   const [isLoading, setLoading] = useState(false);
   const [jobList, setJobList] = useState([]);
-  const [applicantsInfo, setApplicantsInfo] = useState([])
+  const [applicantsInfo, setApplicantsInfo] = useState()
   const fetchStart = () => {
     setLoading(true);
     setError("");
@@ -27,7 +27,6 @@ export const useJobs = () => {
     fetchStart();
 
     const token = localStorage.getItem("token");
-    console.log(token, "token");
     if (token) {
       httpClient.defaults.headers.common["authorization"] = token;
     }
@@ -36,10 +35,8 @@ export const useJobs = () => {
       .get(`recruiters/jobs?page=${data}`)
       .then(({ data }) => {
         fetchSuccess();
-        console.log(data, "data");
         if (data.data.data) {
           setJobList(data.data);
-          //setAuthUser(data.data.data);
         }
       })
       .catch(function (error) {
@@ -50,20 +47,24 @@ export const useJobs = () => {
   };
   const getApplicants = (data) => {
     fetchStart();
-    console.log(data, "data11ww11")
     const token = localStorage.getItem("token");
-    console.log(token, "token");
+
     if (token) {
       httpClient.defaults.headers.common["authorization"] = token;
     }
-    console.log(data, "data1111")
+
     httpClient
       .get(`/recruiters/jobs/${data}/candidates`)
       .then(({ data }) => {
         fetchSuccess();
-        console.log(data, "data");
         if (data.data) {
          setApplicantsInfo(data);
+        }else{
+
+         setApplicantsInfo({
+          data:[]
+         });
+
         }
       })
       .catch(function (error) {

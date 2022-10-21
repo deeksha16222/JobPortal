@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { Modal, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { useProvideAuth } from "./api.js";
 
-export default function Login(props) {
-
+export default function Login() {
   const [values, setValues] = useState({
     email: "",
     password: "",
   });
 
-  const { userLogin, error,  isLoading } = useProvideAuth();
+  const { userLogin, error, isLoading } = useProvideAuth();
   const [validated, setValidated] = useState(false);
   function handleSubmit(e) {
     e.preventDefault();
@@ -17,91 +16,70 @@ export default function Login(props) {
     if (form.checkValidity() === false) {
       e.preventDefault();
       e.stopPropagation();
+      setValidated(true);
     } else {
       userLogin(values);
-      setValidated(true);
-      if (isLoading) {
-        console.log(props.show(), " props.show()");
-      } else {
-        console.log(props.show(), isLoading, " props.show()");
-        if (error?.response?.status !== 401 && !error) {
-          e.preventDefault();
-          e.stopPropagation();
-          props.onHide();
-        } else {
-          props.show();
-        }
-      }
+     
+
     }
   }
+  console.log(!error, "error")
   return (
     <>
-      {/* <button onClick={handleShow}>open me</button> */}
       <div>
-        {/* <Modal show={show} onHide={handleClose}> */}
-        <Modal
-          {...props}
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-          className="login__modal"
-        >
-          <Modal.Header>
-            <Modal.Title id="contained-modal-title-vcenter">Login</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Enter your email"
-                  onChange={(e) =>
-                    setValues({ ...values, email: e.target.value })
-                  }
-                  
-                />
-                <div className="invalid-feedback">
-                  Please enter a valid email address.
-                </div>
-                {error?.response?.status === 401 ? (
-                  <p className="text-error">Please enter a valid email address</p>
-                ) : (
-                  ""
-                )} 
-              </Form.Group>
+        <div className="bg-dark background__wrap"></div>
+        <div className="login-blk">
+          <div className="login-wrap">
+            <p className="title">Login</p>
+            <div className="input-wrap">
+              <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="validationCustom01">
+                  <Form.Label>Email address</Form.Label>
+                  <Form.Control
+                    type="email"
+                    placeholder="Enter your email"
+                    onChange={(e) =>
+                      setValues({ ...values, email: e.target.value })
+                    }
+                    required
+                    className={!error ? "" : "invalid-input"}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please enter a valid email address.
+                  </Form.Control.Feedback>
+                </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  onChange={(e) =>
-                    setValues({ ...values, password: e.target.value })
-                  }
-                  
-                />
-                <div className="invalid-feedback text-right">
-                  Please enter a valid password.
+                <Form.Group className="mb-3" controlId="validationCustom02">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) =>
+                      setValues({ ...values, password: e.target.value })
+                    }
+                    className={!error ? "" : "invalid-input"}
+
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please enter password
+                  </Form.Control.Feedback>
+                  {error?.response?.status === 401 ? (
+                    <p className="text-error">Incorrect email or password</p>
+                  ) : (
+                    ""
+                  )}
+                </Form.Group>
+                <br />
+                <div className="text-center">
+                  <button type="submit" disabled={isLoading} className="primary-btn">
+                    Login
+                  </button>
                 </div>
-                {error?.response?.status === 401 ? (
-                  <p className="text-error">Incorrect email or password</p>
-                ) : (
-                  ""
-                )}
-              </Form.Group>
-              <br />
-              <div className="text-center">
-                <button type="submit" disabled={isLoading} className="primary-btn">
-                  Login
-                </button>
-              </div>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <br />
-          </Modal.Footer>
-        </Modal>
+              </Form>
+            </div>
+          </div>
+        </div>      
       </div>
     </>
   );

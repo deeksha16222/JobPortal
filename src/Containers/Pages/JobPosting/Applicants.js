@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import writing from "../../../assets/images/icons/writing.svg";
 
 export const Applicants = (props) => {
+
   return (
     <Modal
       {...props}

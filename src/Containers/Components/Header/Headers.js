@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
 import logo from "../../../assets/logo.svg";
-import Login from "../../Pages/Login";
 import { useProvideAuth } from "../../Pages/Login/api";
 import Dropdown from "react-bootstrap/Dropdown";
+import { useNavigate } from "react-router-dom";
 
 export const Headers = () => {
   const [color, setColor] = React.useState("transparent");
-  const [modalShow, setModalShow] = React.useState(false);
+
+  const navigate = useNavigate()
   const { authUser, logout } = useProvideAuth();
-  
+
   // for scrolling header
   const listenScrollEvent = (e) => {
     if (window.scrollY < 100) {
@@ -25,13 +26,15 @@ export const Headers = () => {
     <header style={{ backgroundColor: color }} className={color}>
       <div className="container">
         <div className="d-flex justify-content-between header__wrap">
-          <img src={logo} alt="logo" />
+          <img src={logo} alt="logo" 
+          onClick={() => navigate("/")}
+          />
           <div className="right__header">
             {!authUser ? (
               <button
                 type="button"
                 class=" login-btn"
-                onClick={() => setModalShow(true)}
+                onClick={() => navigate("/login")}
               >
                 Login
               </button>
@@ -50,7 +53,6 @@ export const Headers = () => {
           </div>
         </div>
       </div>
-      <Login show={modalShow} onHide={() => setModalShow(false)} />
     </header>
   );
 };
