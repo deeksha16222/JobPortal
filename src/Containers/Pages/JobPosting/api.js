@@ -50,19 +50,19 @@ export const useJobs = () => {
   };
   const getApplicants = (data) => {
     fetchStart();
-
+    console.log(data, "data11ww11")
     const token = localStorage.getItem("token");
     console.log(token, "token");
     if (token) {
       httpClient.defaults.headers.common["authorization"] = token;
     }
-
+    console.log(data, "data1111")
     httpClient
       .get(`/recruiters/jobs/${data}/candidates`)
       .then(({ data }) => {
         fetchSuccess();
         console.log(data, "data");
-        if (data.data.data) {
+        if (data.data) {
          setApplicantsInfo(data);
         }
       })
