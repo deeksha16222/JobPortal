@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { httpClient } from "../../../utl/httpClient.js";
+import { httpClient } from "../../../util/httpClient.js";
 
 
 export const useProvideAuth = () => {

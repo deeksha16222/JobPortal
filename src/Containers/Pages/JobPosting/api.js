@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { httpClient } from "../../../utl/httpClient";
+import { httpClient } from "../../../util/httpClient.js";
 
 export const useJobs = () => {
   const [error, setError] = useState("");
